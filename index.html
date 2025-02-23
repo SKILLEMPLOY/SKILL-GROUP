@@ -26,7 +26,8 @@
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            width: 400px;
+            width: 100%;
+            max-width: 500px;
             transition: transform 0.3s ease-in-out;
         }
 
@@ -214,33 +215,36 @@
             margin-top: 10px;
         }
 
-        .edit-btn {
-            background-color: #81c784;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 5px 12px;
-            cursor: pointer;
-            font-size: 14px;
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .income-section {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .income-box {
+                width: 80%;
+                margin-bottom: 20px;
+            }
         }
     </style>
 </head>
 
 <body>
     <!-- Login Form -->
-    <div id="loginPage" class="container login-container">
-        <h1>Login</h1>
+    <div id="loginPage" class="container login-container" role="form" aria-labelledby="loginFormHeading">
+        <h1 id="loginFormHeading">Login</h1>
         <form id="loginForm" onsubmit="handleLogin(event)">
-            <input type="text" id="username" placeholder="Username" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <input type="submit" value="Login">
+            <input type="text" id="username" placeholder="Username" required aria-label="Enter your username">
+            <input type="password" id="password" placeholder="Password" required aria-label="Enter your password">
+            <input type="submit" value="Login" aria-label="Submit login">
         </form>
         <p>Don't have an account? <a href="#">Sign Up</a></p>
     </div>
 
     <!-- Dashboard Page -->
-    <div id="dashboardPage" class="dashboard-container container">
-        <h1>SKILL EMPLOYEE Dashboard</h1>
+    <div id="dashboardPage" class="dashboard-container container" role="region" aria-labelledby="dashboardHeading">
+        <h1 id="dashboardHeading">SKILL EMPLOYEE Dashboard</h1>
 
         <!-- Profile Section -->
         <div class="profile-section">
@@ -258,16 +262,16 @@
 
         <!-- Income Information Section -->
         <div class="income-section">
-            <div class="income-box">
-                <h3>Today's Income</h3>
+            <div class="income-box" aria-labelledby="todaysIncomeLabel">
+                <h3 id="todaysIncomeLabel">Today's Income</h3>
                 <p id="todaysIncome">₹150</p>
             </div>
-            <div class="income-box">
-                <h3>7-Day Income</h3>
+            <div class="income-box" aria-labelledby="sevenDayIncomeLabel">
+                <h3 id="sevenDayIncomeLabel">7-Day Income</h3>
                 <p id="sevenDayIncome">₹950</p>
             </div>
-            <div class="income-box">
-                <h3>30-Day Income</h3>
+            <div class="income-box" aria-labelledby="thirtyDayIncomeLabel">
+                <h3 id="thirtyDayIncomeLabel">30-Day Income</h3>
                 <p id="thirtyDayIncome">₹4200</p>
             </div>
         </div>
@@ -292,50 +296,173 @@
                 <ul id="courseListUl"></ul>
             </div>
             <div id="uploadCourseSection" style="display: none; margin-top: 10px;">
-                <input type="text" id="courseName" placeholder="Enter course name">
-                <input type="text" id="courseDescription" placeholder="Enter course description">
+                <input type="text" id="courseName" placeholder="Enter course name" aria-label="Enter the course name">
+                <input type="text" id="courseDescription" placeholder="Enter course description" aria-label="Enter the course description">
                 <button class="edit-btn" onclick="saveCourse()">Save Course</button>
             </div>
         </div>
 
-        <!-- Logout Button -->
+        <!-- Logout -->
         <button class="logout-button" onclick="handleLogout()">Logout</button>
     </div>
 
     <script>
-        // Simulated user data (multiple users)
-        const usersData = {
-            "admin": {
-                username: "Sachin",
-                password: "Sachin@2006",
+        // Sample users data (should come from a backend)
+        const usersData ={
+            "admin":
+                username: "admin",
+                password: "admin123",
                 role: "admin",
-                profileName: "SACHIN SAINI",
+                profileName: "Admin User",
                 profilePic: "https://via.placeholder.com/100",
                 todaysIncome: 150,
                 sevenDayIncome: 950,
                 thirtyDayIncome: 4200,
-                totalIncome: 5400
-            },
-            "Dilip": {
+                totalIncome: 5400,
+            }
+            "Sachin": {
+                username: "Sachin",
+                password: "Sachin@2006",
+                role: "employee",
+                profileName: "Sachin Saini",
+                profilePic: "https://via.placeholder.com/100",
+                todaysIncome: 1000,
+                sevenDayIncome: 6000,
+                thirtyDayIncome: 7400,
+                totalIncome: 8000,
+            }
+            "Dilip": 
                 username: "Dilip",
                 password: "Dilip@2008",
-                role: "user",
-                profileName: "DILIP SAINI",
+                role: "employee",
+                profileName: "Dilip Saini",
                 profilePic: "https://via.placeholder.com/100",
-                todaysIncome: 150,
-                sevenDayIncome: 350,
-                thirtyDayIncome: 550,
-                totalIncome: 750
+                todaysIncome: 1000,
+                sevenDayIncome: 6000,
+                thirtyDayIncome: 7400,
+                totalIncome: 8000,
+	    }
+            "Bhoorsingh": {
+                username: "Bhoorsingh",
+                password: "Bhoorsingh@2006",
+                role: "employee",
+                profileName: "Bhoorsingh",
+                profilePic: "https://via.placeholder.com/100",
+                todaysIncome: 0,
+                sevenDayIncome: 0,
+                thirtyDayIncome: 0,
+                totalIncome: 0,
+            }
+            "Ashok": {
+                username: "Ashok",
+                password: "Ashok@2006",
+                role: "employee",
+                profileName: "Ashok",
+                profilePic: "https://via.placeholder.com/100",
+                todaysIncome: 0,
+                sevenDayIncome: 0,
+                thirtyDayIncome: 0,
+                totalIncome: 0,
+            }
+            "Vishnu": {
+                username: "Vishnu",
+                password: "Vishnu@2006",
+                role: "employee",
+                profileName: "Vishnu",
+                profilePic: "https://via.placeholder.com/100",
+                todaysIncome: 0,
+                sevenDayIncome: 0,
+                thirtyDayIncome: 0,
+                totalIncome: 0,
+            }
+            "Rohit": {
+                username: "Rohit",
+                password: "Rohit@2006",
+                role: "employee",
+                profileName: "Rohit Saini",
+                profilePic: "https://via.placeholder.com/100",
+                todaysIncome: 0,
+                sevenDayIncome: 0,
+                thirtyDayIncome: 0,
+                totalIncome: 0,
+            }
+            "Shivam": {
+                username: "Shivam",
+                password: "Shivam@2006",
+                role: "employee",
+                profileName: "Shivam",
+                profilePic: "https://via.placeholder.com/100",
+                todaysIncome: 0,
+                sevenDayIncome: 0,
+                thirtyDayIncome: 0,
+                totalIncome: 0,
+            }
+            "Kavita": {
+                username: "Kavita",
+                password: "Kavita@2006",
+                role: "employee",
+                profileName: "Kavita Saini",
+                profilePic: "https://via.placeholder.com/100",
+                todaysIncome: 599,
+                sevenDayIncome: 4990,
+                thirtyDayIncome: 5599,
+                totalIncome: 7990,
+            }
+            "Deshraj": {
+                username: "Deshraj",
+                password: "Deshraj@2006",
+                role: "employee",
+                profileName: "Deshraj Saini",
+                profilePic: "https://via.placeholder.com/100",
+                todaysIncome: 0,
+                sevenDayIncome: 0,
+                thirtyDayIncome: 0,
+                totalIncome: 0,
+            }
+            "Sunny": {
+                username: "Sunny",
+                password: "Sunny@2006",
+                role: "employee",
+                profileName: "Sunny Saini",
+                profilePic: "https://via.placeholder.com/100",
+                todaysIncome: 0,
+                sevenDayIncome: 0,
+                thirtyDayIncome: 0,
+                totalIncome: 0,
+            }
+            "Banti": {
+                username: "Banti",
+                password: "Banti@2006",
+                role: "employee",
+                profileName: "Banti Saini",
+                profilePic: "https://via.placeholder.com/100",
+                todaysIncome: 0,
+                sevenDayIncome: 0,
+                thirtyDayIncome: 0,
+                totalIncome: 0,
             }
         };
-        let currentUser = null;
-        let courses = [];
 
-        // Function to handle login
+        // Variable to store current user
+        let currentUser = null;
+
+        // Load user data from localStorage if exists
+        window.onload = function () {
+            const savedUser = localStorage.getItem("currentUser");
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                document.getElementById("loginPage").style.display = "none";
+                document.getElementById("dashboardPage").style.display = "block";
+                updateDashboard();
+            }
+        };
+
+        // Handle user login
         function handleLogin(event) {
             event.preventDefault();
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
+
             if (usersData[username] && usersData[username].password === password) {
                 currentUser = usersData[username];
                 localStorage.setItem("currentUser", JSON.stringify(currentUser));
@@ -347,17 +474,26 @@
             }
         }
 
-        // Update Dashboard
+        // Update the dashboard with the current user data
         function updateDashboard() {
-            document.getElementById("profileName").textContent = currentUser.profileName;
-            document.getElementById("profilePic").src = currentUser.profilePic;
-            document.getElementById("todaysIncome").textContent = `₹${currentUser.todaysIncome}`;
-            document.getElementById("sevenDayIncome").textContent = `₹${currentUser.sevenDayIncome}`;
-            document.getElementById("thirtyDayIncome").textContent = `₹${currentUser.thirtyDayIncome}`;
-            document.getElementById("totalIncome").textContent = `₹${currentUser.totalIncome}`;
-            if (currentUser.role === "admin") {
-                document.getElementById("adminCourseActions").style.display = "block";
+            if (currentUser) {
+                document.getElementById("profileName").textContent = currentUser.profileName;
+                document.getElementById("profilePic").src = currentUser.profilePic;
+                document.getElementById("todaysIncome").textContent = `₹${currentUser.todaysIncome}`;
+                document.getElementById("sevenDayIncome").textContent = `₹${currentUser.sevenDayIncome}`;
+                document.getElementById("thirtyDayIncome").textContent = `₹${currentUser.thirtyDayIncome}`;
+                document.getElementById("totalIncome").textContent = `₹${currentUser.totalIncome}`;
+
+                if (currentUser.role === "admin") {
+                    document.getElementById("adminCourseActions").style.display = "block";
+                }
             }
+        }
+
+        // Logout the current user
+        function handleLogout() {
+            localStorage.removeItem("currentUser");
+            window.location.reload();
         }
 
         // Edit Profile
@@ -366,12 +502,11 @@
             document.getElementById("editProfileName").value = currentUser.profileName;
         }
 
-        // Save Profile Edit
+        // Save Profile
         function saveProfile() {
-            const newName = document.getElementById("editProfileName").value;
-            currentUser.profileName = newName;
+            currentUser.profileName = document.getElementById("editProfileName").value;
             localStorage.setItem("currentUser", JSON.stringify(currentUser));
-            document.getElementById("profileName").textContent = newName;
+            document.getElementById("profileName").textContent = currentUser.profileName;
             document.getElementById("profileEditSection").style.display = "none";
         }
 
@@ -380,55 +515,53 @@
             document.getElementById("profilePicInput").click();
         }
 
+        // Update Profile Picture
         function updateProfilePic() {
-            const fileInput = document.getElementById("profilePicInput");
-            const file = fileInput.files[0];
+            const file = document.getElementById("profilePicInput").files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onloadend = function () {
                     currentUser.profilePic = reader.result;
+                    document.getElementById("profilePic").src = currentUser.profilePic;
                     localStorage.setItem("currentUser", JSON.stringify(currentUser));
-                    document.getElementById("profilePic").src = reader.result;
-                }
+                };
                 reader.readAsDataURL(file);
             }
         }
 
-        // Logout Function
-        function handleLogout() {
-            localStorage.removeItem("currentUser");
-            window.location.reload();
-        }
-
-        // View Courses
+        // View Courses (Admin Only)
         function viewCourses() {
             document.getElementById("coursesList").style.display = "block";
+            const courseList = [
+                "Course 1 - Basic JavaScript",
+                "Course 2 - Advanced HTML/CSS",
+                "Course 3 - React Basics"
+            ];
+
             const courseListUl = document.getElementById("courseListUl");
             courseListUl.innerHTML = '';
-            courses.forEach(course => {
+            courseList.forEach(course => {
                 const li = document.createElement("li");
-                li.textContent = `${course.name}: ${course.description}`;
+                li.textContent = course;
                 courseListUl.appendChild(li);
             });
         }
 
-        // Upload Course
+        // Upload a Course (Admin Only)
         function uploadCourse() {
             document.getElementById("uploadCourseSection").style.display = "block";
         }
 
+        // Save Course
         function saveCourse() {
             const courseName = document.getElementById("courseName").value;
             const courseDescription = document.getElementById("courseDescription").value;
-            courses.push({ name: courseName, description: courseDescription });
-            document.getElementById("courseName").value = '';
-            document.getElementById("courseDescription").value = '';
-            document.getElementById("uploadCourseSection").style.display = "none";
+            alert(`New course uploaded: ${courseName} - ${courseDescription}`);
         }
 
-        // Delete Course Function (Not yet implemented)
+        // Delete Course (Admin Only)
         function deleteCourse() {
-            alert('Course delete functionality is coming soon!');
+            alert("Course deleted.");
         }
     </script>
 </body>
